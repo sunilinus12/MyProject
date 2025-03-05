@@ -6,10 +6,15 @@ const useUserViewModel = () => {
   const [error, setError] = useState({ error: false });
   const [page, setPage] = useState(1);
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [footerLoading, setFooterLoading] = useState(false);
 
   const fetchData = async (insidePage = "1") => {
     try {
-      setLoading(true);
+      if (insidePage == 1) {
+        setLoading(true);
+      } else {
+        setFooterLoading(true);
+      }
       let resp = await fetch(
         "https://jsonplaceholder.typicode.com/posts?_limit=10&_page=" +
           insidePage
@@ -22,8 +27,11 @@ const useUserViewModel = () => {
       } else {
         setHasMoreData(false);
       }
-      setLoading(false);
-      //   }
+      if (insidePage == 1) {
+        setLoading(false);
+      } else {
+        setFooterLoading(false);
+      }
     } catch (error) {
       setError({ error: true, message: error });
     }
@@ -36,8 +44,16 @@ const useUserViewModel = () => {
     if (!loading) {
       fetchData(page + 1);
     }
-  }, [loading, page]);
+  }, [loading, page, footerLoading]);
 
-  return { loadMore, fetchData, list, hasMoreData, error, loading };
+  return {
+    loadMore,
+    fetchData,
+    list,
+    hasMoreData,
+    error,
+    loading,
+    footerLoading,
+  };
 };
 export default useUserViewModel;
