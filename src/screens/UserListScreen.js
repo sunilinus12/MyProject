@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useUserViewModel } from "../hooks";
 import { ListFooterLoading, LoadingOverAll, UserItemCard } from "../components";
 
@@ -22,22 +22,31 @@ export default function UserListScreen({ navigation }) {
 
   const onPressCard = useCallback(() => {
     navigation.navigate("userDetail");
-  }, [list]);
+  }, [memoizedList]);
   const keyExtractor = useCallback((item, index) => index.toString());
   const onPageCard = useCallback(
     ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
     [, onPressCard]
   );
+  const memoizedList = useMemo(() => list, [list]);
+
   return loading ? (
     <LoadingOverAll />
   ) : (
     <FlatList
-      data={list}
+      data={memoizedList}
       keyExtractor={keyExtractor}
       renderItem={onPageCard}
       onEndReached={hasMoreData ? loadMore : null}
       onEndReachedThreshold={1}
       ListFooterComponent={footerLoading ? ListFooterLoading : null}
+      // getItemLayout={(data, index) => ({
+      //   length: 100,
+      //   offset: 100 * index,
+      //   index,
+      // })}
+      initialNumToRender={20} // Start with 10 items
+      windowSize={10} // Render only a few offscreen items
     />
   );
 }
