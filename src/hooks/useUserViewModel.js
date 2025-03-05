@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { UserApi } from "../api";
 
 const useUserViewModel = () => {
   const [list, setList] = useState([]);
@@ -15,12 +16,7 @@ const useUserViewModel = () => {
       } else {
         setFooterLoading(true);
       }
-      let resp = await fetch(
-        "https://jsonplaceholder.typicode.com/posts?_limit=10&_page=" +
-          insidePage
-      );
-      //   if (resp.status == "201") {
-      let res = await resp.json();
+      let res = await UserApi(insidePage);
       if (res.length > 0) {
         setList((e) => [...e, ...res]);
         setPage(insidePage);
