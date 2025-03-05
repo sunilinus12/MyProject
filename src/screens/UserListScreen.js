@@ -21,7 +21,10 @@ export default function UserListScreen() {
   } = useUserViewModel();
 
   const keyExtractor = useCallback((item, index) => index.toString());
-  const onPageCard = useCallback(({ item }) => <UserItemCard item={item} />);
+  const onPageCard = useCallback(
+    ({ item }) => <UserItemCard item={item} />,
+    [list]
+  );
   return loading ? (
     <LoadingOverAll />
   ) : (
@@ -29,13 +32,9 @@ export default function UserListScreen() {
       data={list}
       keyExtractor={keyExtractor}
       renderItem={onPageCard}
-      onEndReached={() => {
-        hasMoreData && loadMore();
-      }}
-      onEndReachedThreshold={0.8}
-      ListFooterComponent={() => {
-        return footerLoading && <ListFooterLoading />;
-      }}
+      onEndReached={hasMoreData ? loadMore : null}
+      onEndReachedThreshold={1}
+      ListFooterComponent={footerLoading ? ListFooterLoading : null}
     />
   );
 }
