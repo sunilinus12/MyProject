@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { UserListScreen } from "../src/screens";
+import { StackNavigation } from "../src/navigation";
 
 export default function index() {
-  return <UserListScreen />;
+  return <StackNavigation />;
 }
 
 const styles = StyleSheet.create({});
