@@ -1,12 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { UserListScreen } from "../src/screens";
 
 export default function index() {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  )
+  return <UserListScreen />;
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
