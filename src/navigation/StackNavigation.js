@@ -1,13 +1,25 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { UserListScreen } from "../screens"; // Ensure correct path
+import { UserDetailScreen, UserListScreen } from "../screens"; // Ensure correct path
 import React from "react";
 
+const StackList = [
+  {
+    name: "UserList",
+    component: UserListScreen,
+  },
+  {
+    name: "userDetail",
+    component: UserDetailScreen,
+  },
+];
 const Stack = createStackNavigator();
 
 export default function StackNavigation() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="UserList" component={UserListScreen} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {StackList.map((item, index) => (
+        <Stack.Screen key={index} name={item.name} component={item.component} />
+      ))}
     </Stack.Navigator>
   );
 }

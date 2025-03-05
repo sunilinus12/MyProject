@@ -9,7 +9,7 @@ import React, { useCallback } from "react";
 import { useUserViewModel } from "../hooks";
 import { ListFooterLoading, LoadingOverAll, UserItemCard } from "../components";
 
-export default function UserListScreen() {
+export default function UserListScreen({ navigation }) {
   const {
     loadMore,
     fetchData,
@@ -20,10 +20,13 @@ export default function UserListScreen() {
     footerLoading,
   } = useUserViewModel();
 
+  const onPressCard = useCallback(() => {
+    navigation.navigate("userDetail");
+  }, [list]);
   const keyExtractor = useCallback((item, index) => index.toString());
   const onPageCard = useCallback(
-    ({ item }) => <UserItemCard item={item} />,
-    [list]
+    ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
+    [, onPressCard]
   );
   return loading ? (
     <LoadingOverAll />

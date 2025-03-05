@@ -1,16 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
-export default function UserItemCard({ item }) {
+export default function UserItemCard({ item, onPress = () => {} }) {
   const { title = null, id } = item;
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       {title && (
         <Text>
           {id}: {title}
         </Text>
       )}
-    </View>
+    </Pressable>
   );
 }
 
