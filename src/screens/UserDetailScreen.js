@@ -8,11 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function UserDetailScreen() {
   const dispatch = useDispatch();
-  const { fetchData } = useUserDetailViewModel(dispatch);
-  
-  const { user: data, loading, error } = useSelector((e) => e.user);
-  console.log("useruser", data, loading, error);
-
+  const { fetchData, data, loading, error } = useUserDetailViewModel(dispatch);
   const route = useRoute(); // ✅ Call useRoute()
   const {
     updateUserDetail,
