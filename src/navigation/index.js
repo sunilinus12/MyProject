@@ -1,3 +1,3 @@
 import StackNavigation from "./StackNavigation";
-
-export { StackNavigation };
+import BottomNavigation from "./BottomNavigation"
+export { StackNavigation,BottomNavigation };
