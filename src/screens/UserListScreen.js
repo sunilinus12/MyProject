@@ -36,7 +36,6 @@ export default function UserListScreen({ navigation }) {
   if (error?.error) {
     return (
       <View>
-        {" "}
         <Text>{error.message || "Something went wrong"}</Text>
       </View>
     );
