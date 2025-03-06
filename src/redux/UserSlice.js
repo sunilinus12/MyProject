@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getUserDetail } from "./actions/UserAction";
 
 const initialState = {
   user: null,
@@ -9,19 +10,21 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState, // ✅ Fixed typo here
-  reducers: {
-    fetchUserStart: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchUserSuccess: (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-    },
-    fetchUserError: (state) => {
-      state.loading = false;
-      state.error = true;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserDetail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getUserDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
