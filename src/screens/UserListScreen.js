@@ -30,6 +30,10 @@ export default function UserListScreen({ navigation }) {
   );
   const memoizedList = useMemo(() => list, [list]);
 
+  if(error?.error){
+    return <View> <Text>{error.message||"Something went wrong"}</Text></View>
+  }
+
   return loading ? (
     <LoadingOverAll />
   ) : (

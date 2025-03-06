@@ -11,6 +11,9 @@ const useUserViewModel = () => {
 
   const fetchData = async (insidePage = "1") => {
     try {
+      setError({
+        error: false,
+      });
       if (insidePage == 1) {
         setLoading(true);
       } else {
@@ -18,7 +21,7 @@ const useUserViewModel = () => {
       }
       let res = await UserApi(insidePage);
       if (res.length > 0) {
-        setList((e) => [...e, ...res]);
+        setList((e) => (insidePage == 1 ? res : [...e, ...res]));
         setPage(insidePage);
       } else {
         setHasMoreData(false);
@@ -29,9 +32,16 @@ const useUserViewModel = () => {
         setFooterLoading(false);
       }
     } catch (error) {
-      setError({ error: true, message: error });
+      setError({
+        error: true,
+        message:
+          typeof error?.message === "string"
+            ? String(error.message)
+            : String(error) || "An unexpected error occurred",
+      });
     }
   };
+
   useEffect(() => {
     fetchData(page);
   }, []);
