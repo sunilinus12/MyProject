@@ -1,22 +1,34 @@
-import { useState } from "react";
+import { act, useReducer, useState } from "react";
 import UserDetailApi from "../api/UserDetailApi"; // Ensure correct import
 
+const initalState = {
+  data: null,
+  loading: false,
+  error: false,
+};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_START":
+      return { ...state, loading: true, error: false };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, data: action.payload };
+    case "FETCH_ERROR":
+      return { ...state, loading: false, error: true };
+    default:
+      return state;
+  }
+};
 export default function useUserDetailViewModel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
+  const [state, dispatch] = useReducer(reducer, initalState);
   const fetchData = async (postId) => {
     try {
-      setLoading(true);
+      dispatch({ type: "FETCH_START" });
       let resp = await UserDetailApi(postId);
-      setData(resp);
+      dispatch({ type: "FETCH_SUCCESS", payload: resp });
     } catch (err) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      dispatch({ type: "FETCH_ERROR" });
     }
   };
 
-  return { fetchData, data, loading, error };
+  return { fetchData, ...state };
 }
