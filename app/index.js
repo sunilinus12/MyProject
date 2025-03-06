@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { BottomNavigation, StackNavigation } from "../src/navigation";
+import { StackNavigation } from "../src/navigation";
+import AppContextProvider from "../src/context/AppContextProvider";
 
 export default function index() {
-  // return <BottomNavigation/>
-  return<StackNavigation />;
+  return (
+    <AppContextProvider>
+      <StackNavigation />
+    </AppContextProvider>
+  );
 }
-
-const styles = StyleSheet.create({});

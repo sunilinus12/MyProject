@@ -5,9 +5,10 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import { useUserViewModel } from "../hooks";
 import { ListFooterLoading, LoadingOverAll, UserItemCard } from "../components";
+import { AppContext } from "../context/AppContextProvider";
 
 export default function UserListScreen({ navigation }) {
   const {
@@ -19,9 +20,12 @@ export default function UserListScreen({ navigation }) {
     loading,
     footerLoading,
   } = useUserViewModel();
+  const { data: globalData, setData } = useContext(AppContext);
+
 
   const onPressCard = useCallback(
     (id) => {
+      setData({id})
       navigation.navigate("userDetail", { id });
     },
     [memoizedList]

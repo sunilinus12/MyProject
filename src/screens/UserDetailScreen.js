@@ -1,8 +1,9 @@
 import { Button, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useUserDetailUpdateViewModel, useUserDetailViewModel } from "../hooks";
 import { useRoute } from "@react-navigation/native";
 import { LoadingOverAll, UserEditModal } from "../components";
+import { AppContext } from "../context/AppContextProvider";
 
 export default function UserDetailScreen() {
   const { fetchData, data, loading, error } = useUserDetailViewModel();
@@ -15,6 +16,8 @@ export default function UserDetailScreen() {
   } = useUserDetailUpdateViewModel();
   const { id } = route.params || {}; // ✅ Extract id safely
   const [isVisible, setIsVisible] = useState(false);
+  const { data: globalData } = useContext(AppContext);
+  console.log("globalDataglobalDataglobalData", globalData);
 
   useEffect(() => {
     if (id) {
