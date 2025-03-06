@@ -10,7 +10,7 @@ function UserItemCard({ item, onPress = () => {} }) {
   return (
     <Pressable onPress={onPagePress} style={styles.container}>
       {title && (
-        <Text>
+        <Text style={styles.text}>
           {id}: {title}
         </Text>
       )}
@@ -28,4 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10,
   },
+  text:{
+    textTransform:"capitalize"
+  }
 });

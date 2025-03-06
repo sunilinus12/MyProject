@@ -20,7 +20,7 @@ export default function UserDetailScreen() {
       {error && <Text style={styles.errorText}>{error}</Text>}
       {data && !loading && (
         <View>
-          <Text style={styles.title}>{data?.title}</Text>
+          <Text style={styles.title}>{data?.id + ". " + data?.title}</Text>
           <Text style={styles.body}>{data?.body}</Text>
         </View>
       )}
@@ -37,9 +37,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    textTransform:"capitalize"
   },
   body: {
     fontSize: 16,
+    textTransform:"capitalize"
   },
   errorText: {
     color: "red",
