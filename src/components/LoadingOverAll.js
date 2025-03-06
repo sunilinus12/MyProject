@@ -3,8 +3,13 @@ import React from "react";
 
 export default function LoadingOverAll({ withBackdrop = false }) {
   return (
-    <View style={[styles.container, withBackdrop && styles.overlay]}>
-      <View style={styles.loaderBox}>
+    <View
+      style={[
+        styles.container,
+        withBackdrop ? styles.overlay : styles.background,
+      ]}
+    >
+      <View style={[styles.loaderBox ,!withBackdrop&&{backgroundColor:"transparent"}]}>
         <ActivityIndicator size="large" color="green" />
       </View>
     </View>
@@ -12,6 +17,10 @@ export default function LoadingOverAll({ withBackdrop = false }) {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
   container: {
     justifyContent: "center",
     alignItems: "center",
