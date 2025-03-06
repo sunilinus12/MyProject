@@ -17,7 +17,6 @@ export default function UserDetailScreen() {
   const { id } = route.params || {}; // ✅ Extract id safely
   const [isVisible, setIsVisible] = useState(false);
   const { data: globalData } = useContext(AppContext);
-  console.log("globalDataglobalDataglobalData", globalData);
 
   useEffect(() => {
     if (id) {
@@ -34,9 +33,9 @@ export default function UserDetailScreen() {
     updateUserDetail({ ...data });
     console.log("updateResp", updateResp);
 
-    if (updateResp) {
+    // if (updateResp) {
       closeModal();
-    }
+    // }
   }, []);
 
   return (
