@@ -1,34 +1,21 @@
-import { act, useReducer, useState } from "react";
-import UserDetailApi from "../api/UserDetailApi"; // Ensure correct import
+import { UserDetailApi } from "../api";
+import {
+  fetchUserStart,
+  fetchUserSuccess,
+  fetchUserError,
+} from "../redux/UserSlice";
 
-const initalState = {
-  data: null,
-  loading: false,
-  error: false,
-};
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_START":
-      return { ...state, loading: true, error: false };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, data: action.payload };
-    case "FETCH_ERROR":
-      return { ...state, loading: false, error: true };
-    default:
-      return state;
-  }
-};
-export default function useUserDetailViewModel() {
-  const [state, dispatch] = useReducer(reducer, initalState);
+export default function useUserDetailViewModel(dispatch) {
   const fetchData = async (postId) => {
     try {
-      dispatch({ type: "FETCH_START" });
+      dispatch(fetchUserStart()); // Start loading state
       let resp = await UserDetailApi(postId);
-      dispatch({ type: "FETCH_SUCCESS", payload: resp });
+
+      dispatch(fetchUserSuccess(resp)); // Store the response in Redux state
     } catch (err) {
-      dispatch({ type: "FETCH_ERROR" });
+      dispatch(fetchUserError("Failed to fetch user")); // Handle error
     }
   };
 
-  return { fetchData, ...state };
+  return { fetchData };
 }

@@ -4,9 +4,15 @@ import { useUserDetailUpdateViewModel, useUserDetailViewModel } from "../hooks";
 import { useRoute } from "@react-navigation/native";
 import { LoadingOverAll, UserEditModal } from "../components";
 import { AppContext } from "../context/AppContextProvider";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function UserDetailScreen() {
-  const { fetchData, data, loading, error } = useUserDetailViewModel();
+  const dispatch = useDispatch();
+  const { fetchData } = useUserDetailViewModel(dispatch);
+  
+  const { user: data, loading, error } = useSelector((e) => e.user);
+  console.log("useruser", data, loading, error);
+
   const route = useRoute(); // ✅ Call useRoute()
   const {
     updateUserDetail,
@@ -34,7 +40,7 @@ export default function UserDetailScreen() {
     console.log("updateResp", updateResp);
 
     // if (updateResp) {
-      closeModal();
+    closeModal();
     // }
   }, []);
 
