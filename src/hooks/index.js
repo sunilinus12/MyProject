@@ -1,3 +1,8 @@
 import useUserViewModel from "./useUserViewModel";
 import useUserDetailViewModel from "./useUserDetailViewModel";
-export { useUserViewModel, useUserDetailViewModel };
+import useUserDetailUpdateViewModel from "./useUserDetailUpdateViewModel";
+export {
+  useUserViewModel,
+  useUserDetailViewModel,
+  useUserDetailUpdateViewModel,
+};

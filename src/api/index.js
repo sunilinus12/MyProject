@@ -1,3 +1,4 @@
 import UserApi from "./UserApi";
 import UserDetailApi from "./UserDetailApi";
-export { UserApi, UserDetailApi };
+import UserDetailUpdateApi from "./UserDetailUpdateApi";
+export { UserApi, UserDetailApi ,UserDetailUpdateApi};
