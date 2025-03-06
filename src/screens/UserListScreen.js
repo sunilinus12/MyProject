@@ -20,9 +20,12 @@ export default function UserListScreen({ navigation }) {
     footerLoading,
   } = useUserViewModel();
 
-  const onPressCard = useCallback(() => {
-    navigation.navigate("userDetail");
-  }, [memoizedList]);
+  const onPressCard = useCallback(
+    (id) => {
+      navigation.navigate("userDetail", { id });
+    },
+    [memoizedList]
+  );
   const keyExtractor = useCallback((item, index) => index.toString());
   const onPageCard = useCallback(
     ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
@@ -30,8 +33,13 @@ export default function UserListScreen({ navigation }) {
   );
   const memoizedList = useMemo(() => list, [list]);
 
-  if(error?.error){
-    return <View> <Text>{error.message||"Something went wrong"}</Text></View>
+  if (error?.error) {
+    return (
+      <View>
+        {" "}
+        <Text>{error.message || "Something went wrong"}</Text>
+      </View>
+    );
   }
 
   return loading ? (

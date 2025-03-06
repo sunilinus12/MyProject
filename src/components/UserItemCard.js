@@ -2,11 +2,13 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { memo } from "react";
 import { useNavigation } from "@react-navigation/native";
 
- function UserItemCard({ item, onPress = () => {} }) {
+function UserItemCard({ item, onPress = () => {} }) {
   const { title = null, id } = item;
-  const navigation = useNavigation();
+  const onPagePress = () => {
+    onPress(id);
+  };
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={onPagePress} style={styles.container}>
       {title && (
         <Text>
           {id}: {title}
@@ -15,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
     </Pressable>
   );
 }
-export default memo(UserItemCard)
+export default memo(UserItemCard);
 const styles = StyleSheet.create({
   container: {
     width: "100%",
