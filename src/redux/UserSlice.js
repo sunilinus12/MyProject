@@ -10,7 +10,13 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState, // ✅ Fixed typo here
-  reducers: {},
+  reducers: {
+    clearUserDetail: (state, action) => {
+      state.user = null;
+      loading = false;
+      error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserDetail.pending, (state) => {
@@ -28,7 +34,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { fetchUserStart, fetchUserSuccess, fetchUserError } =
-  userSlice.actions;
+export const { clearUserDetail } = userSlice.actions;
 
 export default userSlice.reducer;

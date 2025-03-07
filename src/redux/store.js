@@ -4,9 +4,9 @@ import userReducer from "./UserSlice";
 
 // Custom Middleware
 const customMiddleware = (store) => (next) => (action) => {
-  console.log("Custom Middleware: Dispatching", action);
+  // console.log("Custom Middleware: Dispatching", action);
   let result = next(action); // Pass action to next middleware/reducer
-  console.log("Custom Middleware: Next State", store.getState());
+  // console.log("Custom Middleware: Next State", store.getState());
   return result;
 };
 const store = configureStore({
@@ -14,8 +14,7 @@ const store = configureStore({
     user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(customMiddleware), // No logger, only custom middleware
+    getDefaultMiddleware().concat(customMiddleware),
 });
-
 
 export default store;

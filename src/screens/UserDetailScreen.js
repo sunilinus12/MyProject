@@ -7,23 +7,18 @@ import { AppContext } from "../context/AppContextProvider";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserDetailScreen() {
-  const { fetchData, data, loading, error } = useUserDetailViewModel();
   const route = useRoute(); // ✅ Call useRoute()
+  const { id } = route.params || {}; // ✅ Extract id safely
+  const { fetchData, data, loading, error } = useUserDetailViewModel(id);
+  const [isVisible, setIsVisible] = useState(false);
+
   const {
     updateUserDetail,
     loading: updateLoading,
     error: updateError,
     data: updateResp,
   } = useUserDetailUpdateViewModel();
-  const { id } = route.params || {}; // ✅ Extract id safely
-  const [isVisible, setIsVisible] = useState(false);
-  const { data: globalData } = useContext(AppContext);
 
-  useEffect(() => {
-    if (id) {
-      fetchData(id);
-    }
-  }, [id]);
   const openModal = () => {
     setIsVisible(true);
   };
@@ -32,9 +27,6 @@ export default function UserDetailScreen() {
   };
   const onSaveData = useCallback((data) => {
     updateUserDetail({ ...data });
-    console.log("updateResp", updateResp);
-
-    // if (updateResp) {
     closeModal();
     // }
   }, []);
