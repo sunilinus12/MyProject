@@ -34,7 +34,7 @@ export default function UserListScreen({ navigation }) {
 
   const onPageCard = useCallback(
     ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
-    [] // ✅ Correct dependency
+    [onPressCard] // ✅ Correct dependency
   );
 
   if (error?.error) {
@@ -55,8 +55,10 @@ export default function UserListScreen({ navigation }) {
       onEndReached={hasMoreData ? loadMore : null}
       onEndReachedThreshold={1}
       ListFooterComponent={footerLoading ? ListFooterLoading : null}
-      initialNumToRender={20}
-      windowSize={10}
+      // initialNumToRender={20}
+      // windowSize={10}
     />
   );
 }
+
+const styles = StyleSheet.create({});
