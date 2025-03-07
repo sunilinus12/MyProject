@@ -20,6 +20,7 @@ export default function useUserDetailViewModel(userId) {
 
     return () => {
       dispatch(clearUserDetail()); // ✅ Clears data only when unmounting
+      dispatch(getUserDetail.rejected())
     };
   }, [userId, fetchData, dispatch]); // ✅ Corrected dependencies
 

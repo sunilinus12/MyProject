@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { UserApi } from "../api";
 
 const initialState = {
@@ -13,9 +13,10 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "FetchStart":
+      console.log("action", action.payload);
       return {
         ...state,
-        loading: action.payload === 1, // Show main loader only for first page
+        loading: action.payload == 1, // Show main loader only for first page
         footerLoading: action.payload !== 1, // Show footer loader for pagination
         error: { error: false },
       };
@@ -54,11 +55,19 @@ const reducer = (state, action) => {
 const useUserViewModel = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { list, loading, error, page, hasMoreData, footerLoading } = state;
+  const apiRef = useRef(null);
 
   const fetchData = useCallback(async (insidePage = 1) => {
     try {
+      if (apiRef.current) {
+        apiRef.current.abort();
+      }
+
+      apiRef.current = new AbortController();
+      const signal = apiRef.current.signal;
       dispatch({ type: "FetchStart", payload: Number(insidePage) });
-      let res = await UserApi(insidePage);
+      let res = await UserApi(insidePage, signal);
+      // if (signal.aborted) return;
       dispatch({
         type: "FetchSuccess",
         payload: {
@@ -67,6 +76,9 @@ const useUserViewModel = () => {
         },
       });
     } catch (error) {
+      if (error.name == "AbortError") {
+        return console.log("aborted the api", error);
+      }
       dispatch({
         type: "FetchFailed",
         payload: {
@@ -77,6 +89,8 @@ const useUserViewModel = () => {
               : "An unexpected error occurred",
         },
       });
+    } finally {
+      apiRef.current = null;
     }
   }, []);
 
@@ -85,10 +99,10 @@ const useUserViewModel = () => {
   }, []);
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMoreData) {
+    if (!loading && !footerLoading && hasMoreData) {
       fetchData(page + 1);
     }
-  }, [loading, hasMoreData, page, fetchData]);
+  }, [loading, hasMoreData, page, fetchData, footerLoading]);
 
   return {
     loadMore,

@@ -11,30 +11,20 @@ import { ListFooterLoading, LoadingOverAll, UserItemCard } from "../components";
 import { AppContext } from "../context/AppContextProvider";
 
 export default function UserListScreen({ navigation }) {
-  const {
-    loadMore,
-    fetchData,
-    list,
-    hasMoreData,
-    error,
-    loading,
-    footerLoading,
-  } = useUserViewModel();
+  const { loadMore, list, hasMoreData, error, loading, footerLoading } =
+    useUserViewModel();
   const { setData } = useContext(AppContext);
 
-  const onPressCard = useCallback(
-    (id) => {
-      setData({ id });
-      navigation.navigate("userDetail", { id });
-    },
-    [] // ✅ No unnecessary dependencies
-  );
+  const onPressCard = useCallback((id) => {
+    setData({ id });
+    navigation.navigate("userDetail", { id });
+  }, []);
 
   const keyExtractor = useCallback((item, index) => index.toString(), []); // ✅ Stable function
 
   const onPageCard = useCallback(
     ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
-    [onPressCard] // ✅ Correct dependency
+    [onPressCard]
   );
 
   if (error?.error) {
@@ -44,7 +34,7 @@ export default function UserListScreen({ navigation }) {
       </View>
     );
   }
-
+  
   return loading ? (
     <LoadingOverAll />
   ) : (
@@ -53,7 +43,7 @@ export default function UserListScreen({ navigation }) {
       keyExtractor={keyExtractor}
       renderItem={onPageCard}
       onEndReached={hasMoreData ? loadMore : null}
-      onEndReachedThreshold={1}
+      onEndReachedThreshold={0.7}
       ListFooterComponent={footerLoading ? ListFooterLoading : null}
       // initialNumToRender={20}
       // windowSize={10}
