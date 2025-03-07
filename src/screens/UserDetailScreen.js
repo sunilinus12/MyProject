@@ -3,8 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useUserDetailUpdateViewModel, useUserDetailViewModel } from "../hooks";
 import { useRoute } from "@react-navigation/native";
 import { LoadingOverAll, UserEditModal } from "../components";
-import { AppContext } from "../context/AppContextProvider";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function UserDetailScreen() {
   const route = useRoute(); // ✅ Call useRoute()

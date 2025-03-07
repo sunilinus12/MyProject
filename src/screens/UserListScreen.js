@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import { useUserViewModel } from "../hooks";
 import { ListFooterLoading, LoadingOverAll, UserItemCard } from "../components";
 import { AppContext } from "../context/AppContextProvider";
@@ -20,22 +20,22 @@ export default function UserListScreen({ navigation }) {
     loading,
     footerLoading,
   } = useUserViewModel();
-  const { data: globalData, setData } = useContext(AppContext);
-
+  const { setData } = useContext(AppContext);
 
   const onPressCard = useCallback(
     (id) => {
-      setData({id})
+      setData({ id });
       navigation.navigate("userDetail", { id });
     },
-    [memoizedList]
+    [] // ✅ No unnecessary dependencies
   );
-  const keyExtractor = useCallback((item, index) => index.toString());
+
+  const keyExtractor = useCallback((item, index) => index.toString(), []); // ✅ Stable function
+
   const onPageCard = useCallback(
     ({ item }) => <UserItemCard item={item} onPress={onPressCard} />,
-    [, onPressCard]
+    [] // ✅ Correct dependency
   );
-  const memoizedList = useMemo(() => list, [list]);
 
   if (error?.error) {
     return (
@@ -49,21 +49,14 @@ export default function UserListScreen({ navigation }) {
     <LoadingOverAll />
   ) : (
     <FlatList
-      data={memoizedList}
+      data={list} // ✅ No need for memoizedList
       keyExtractor={keyExtractor}
       renderItem={onPageCard}
       onEndReached={hasMoreData ? loadMore : null}
       onEndReachedThreshold={1}
       ListFooterComponent={footerLoading ? ListFooterLoading : null}
-      // getItemLayout={(data, index) => ({
-      //   length: 100,
-      //   offset: 100 * index,
-      //   index,
-      // })}
-      initialNumToRender={20} // Start with 10 items
-      windowSize={10} // Render only a few offscreen items
+      initialNumToRender={20}
+      windowSize={10}
     />
   );
 }
-
-const styles = StyleSheet.create({});
