@@ -15,9 +15,9 @@ export const getUserDetail = createAsyncThunk(
 
 export const getUserListing = createAsyncThunk(
   "userList/fetch",
-  async (page, thunkAPI) => {
+  async ({page,signal}, thunkAPI) => {
     try {
-      const response = await UserApi(page); // Ensure API function exists
+      const response = await UserApi(page,signal); // Ensure API function exists
       return { data: response, page };
     } catch (error) {
       console.error("API Error:", error.message);

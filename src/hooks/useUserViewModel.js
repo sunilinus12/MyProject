@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserListing } from "../redux/actions/UserAction";
 
@@ -10,13 +10,27 @@ const useUserViewModel = () => {
     (state) => state.userList // Make sure it matches the store key in store.js
   );
   const { list, loading, error, page, hasMoreData, footerLoading } = state;
-
+  const apiRef = useRef(null);
   const fetchData = useCallback(async (insidePage = 1) => {
-    dispatch(getUserListing(insidePage)); // ✅ Dispatch Redux action
+    if (apiRef.current) {
+      apiRef.current.abort(); // Abort the previous request if it exists
+    }
+
+    apiRef.current = new AbortController(); // ✅ Correct assignment
+    const signal = apiRef.current.signal;
+
+    dispatch(getUserListing({ page: insidePage, signal })).finally(() => {
+      apiRef.current = null;
+    }); // ✅ Pass as an object
   }, []);
 
   useEffect(() => {
     fetchData();
+    return () => {
+      if (apiRef.current) {
+        apiRef.current.abort(); // Abort the previous request if it exists
+      }
+    };
   }, []);
 
   const loadMore = useCallback(() => {
