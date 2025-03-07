@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./UserSlice";
-// import logger from "redux-logger"; // Import logger middleware
-
+import userListReducer from "./UserListingSlice";
 // Custom Middleware
 const customMiddleware = (store) => (next) => (action) => {
   // console.log("Custom Middleware: Dispatching", action);
@@ -12,6 +11,7 @@ const customMiddleware = (store) => (next) => (action) => {
 const store = configureStore({
   reducer: {
     user: userReducer,
+    userList: userListReducer, // ✅ Ensure it matches `useSelector`
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(customMiddleware),
