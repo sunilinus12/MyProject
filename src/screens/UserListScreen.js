@@ -43,7 +43,7 @@ export default function UserListScreen({ navigation }) {
       keyExtractor={keyExtractor}
       renderItem={onPageCard}
       onEndReached={hasMoreData ? loadMore : null}
-      onEndReachedThreshold={0.7}
+      onEndReachedThreshold={0.2}
       ListFooterComponent={footerLoading ? ListFooterLoading : null}
       // initialNumToRender={20}
       // windowSize={10}

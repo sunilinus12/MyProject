@@ -13,7 +13,6 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "FetchStart":
-      console.log("action", action.payload);
       return {
         ...state,
         loading: action.payload == 1, // Show main loader only for first page
